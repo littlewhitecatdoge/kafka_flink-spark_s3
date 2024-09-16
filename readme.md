@@ -42,6 +42,8 @@ I use the emr here . (j-3DJHT6NC2IX61)
 
 ### Make msk & emr connected
 
+Setting the security group of msk and emr cluster.
+
 ### Install jar & chmod
 
 ```
@@ -67,4 +69,3 @@ python3 streaming_data_producer.py
 ```
 
 ### Check the sink data on s3 path
-
