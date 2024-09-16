@@ -23,7 +23,7 @@ def flink_kafka_to_s3():
 
 
     # 配置 sink
-    output_path = "s3://feixianglabbucket/kafka_output_data/"
+    output_path = "s3://<yourbucket name>/kafka_output_data/"
 
     # 配置 rolling policy 默认是 128mb,60s,60s
 
