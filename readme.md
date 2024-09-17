@@ -51,7 +51,7 @@ wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-k
 
 wget https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.5.1/kafka-clients-3.5.1.jar
 
-chmod 700 flink-connector-kafka-3.0.1-1.18.jar
+chmod 700 flink-sql-connector-kafka-3.2.0-1.18.jar
 
 chmod 700 kafka-clients-3.5.1.jar
 ```
