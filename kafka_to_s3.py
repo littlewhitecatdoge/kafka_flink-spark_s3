@@ -30,7 +30,7 @@ def flink_kafka_to_s3():
     rolling_Policy=RollingPolicy.default_rolling_policy() 
 
     # 配置 sink
-    sink = FileSink.for_row_format(output_path,Encoder.simple_string_encoder()).with_output_file_config(OutputFileConfig.builder().with_part_suffix(".txt").build).with_rolling_policy(rolling_Policy).build()
+    sink = FileSink.for_row_format(output_path,Encoder.simple_string_encoder()).with_output_file_config(OutputFileConfig.builder().with_part_suffix(".txt").build()).with_rolling_policy(rolling_Policy).build()
 
     # 将数据写入 S3
 
