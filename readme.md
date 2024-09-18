@@ -22,7 +22,7 @@ tar -zxvf iot_23_datasets_small.tar.gz
 
 ### Create msk cluster:
 ```
-arn:aws:kafka:eu-west-1:855103261293:cluster/kakfka-flink/3184014b-1645-4bc5-8f73-c445e9826f30-6
+arn:aws:kafka:eu-west-1:xxxxxxx:cluster/kakfka-flink/3184014b-1645-4bc5-8f73-c445e9826f30-6
 ```
 ### Create kafka topic with kafka client in EC2
 ```
@@ -32,7 +32,7 @@ tar -xzf kafka_2.13-3.5.1.tgz
 
 cd kafka_2.13-3.5.1/bin
 
-./kafka-topics.sh --create --bootstrap-server b-1.kakfkaflink.w3luga.c6.kafka.eu-west-1.amazonaws.com:9092 --replication-factor 3 --partitions 1 --topic MSKTestTopic
+./kafka-topics.sh --create --bootstrap-server b-1.xxxxxxxx.amazonaws.com:9092 --replication-factor 3 --partitions 1 --topic MSKTestTopic
 
 >> Created topic MSKTestTopic.
 ```
