@@ -12,7 +12,7 @@ def flink_kafka_to_s3():
     
     # 配置 Kafka 源
     kafka_source = KafkaSource.builder() \
-        .set_bootstrap_servers("b-1.kakfkaflink.w3luga.c6.kafka.eu-west-1.amazonaws.com:9092") \
+        .set_bootstrap_servers("b-1.xxxxxxxx.amazonaws.com:9092") \
         .set_topics("MSKTestTopic") \
         .set_starting_offsets(KafkaOffsetsInitializer.earliest()) \
         .set_value_only_deserializer(SimpleStringSchema()) \
