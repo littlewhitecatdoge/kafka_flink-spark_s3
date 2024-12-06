@@ -1,0 +1,70 @@
+package com.mycompany.app;
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.hadoop.hbase.client.{Connection, ConnectionFactory, Put, BufferedMutator}
+import org.apache.hadoop.hbase.util.Bytes
+import org.apache.hadoop.hbase.{HBaseConfiguration, TableName}
+
+object KafkaToHBase {
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder()
+      .appName("KafkaToHBase")
+      .getOrCreate()
+
+    val kafkaParams = Map[String, Object](
+      "bootstrap.servers" -> "b-1.mskemrcluster1.3d0rbu.c7.kafka.us-west-2.amazonaws.com:9092",
+      "key.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer",
+      "value.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer",
+      "group.id" -> "kafka-consumer-group",
+      "auto.offset.reset" -> "latest",
+      "enable.auto.commit" -> (false: java.lang.Boolean)
+    )
+
+    val topics = Array("MSKTutorialTopic")
+
+    val ssc = new StreamingContext(spark.sparkContext, Seconds(5))
+
+    val kafkaStream = KafkaUtils.createDirectStream[String, String](
+      ssc,
+      PreferConsistent,
+      Subscribe[String, String](topics, kafkaParams)
+    )
+
+    val hbaseConf = HBaseConfiguration.create()
+
+    val connection = ConnectionFactory.createConnection(hbaseConf)
+    val tableName = TableName.valueOf("emrdrone")
+    val table = connection.getTable(tableName)
+    val mutator = connection.getBufferedMutator(tableName)
+
+    kafkaStream.foreachRDD(rdd => {
+      rdd.foreach(record => {
+        val json = record.value()
+        val drone_id = json.split(",")(0).split(":")(1).trim
+        val rowKey = Bytes.toBytes(drone_id)
+
+        val put = new Put(rowKey)
+
+        put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("current_lat"), Bytes.toBytes(json.split(",")(1).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("current_lon"), Bytes.toBytes(json.split(",")(2).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("current_height"), Bytes.toBytes(json.split(",")(3).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("current_order_id"), Bytes.toBytes(json.split(",")(4).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("other"), Bytes.toBytes("drone_id"), Bytes.toBytes(drone_id))
+        put.addColumn(Bytes.toBytes("other"), Bytes.toBytes("direction"), Bytes.toBytes(json.split(",")(5).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("other"), Bytes.toBytes("loaded"), Bytes.toBytes(json.split(",")(6).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("other"), Bytes.toBytes("package_delivered"), Bytes.toBytes(json.split(",")(7).split(":")(1).trim))
+        put.addColumn(Bytes.toBytes("other"), Bytes.toBytes("timestamp"), Bytes.toBytes(json.split(",")(8).split(":")(1).trim.replace("\n", "")))
+
+        mutator.mutate(put)
+      })
+      mutator.flush()
+    })
+
+    ssc.start()
+    ssc.awaitTermination()
+  }
+}
