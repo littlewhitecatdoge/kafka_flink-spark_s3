@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mycompany.app</groupId>
   <artifactId>tpxkafka</artifactId>
-  <version>16.0</version>
+  <version>65.0</version>
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
   <inceptionYear>2018</inceptionYear>
@@ -107,6 +107,20 @@
     <version>4.1.7</version>
 </dependency>
 
+<dependency>
+    <groupId>org.apache.htrace</groupId>
+    <artifactId>htrace-core4</artifactId>
+    <version>4.2.0-incubating</version>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.htrace</groupId>
+    <artifactId>htrace</artifactId>
+    <version>4.2.0-incubating</version>
+    <type>pom</type>
+</dependency>
+
+
   </dependencies>
 
   <build>
@@ -184,7 +198,7 @@
               <include>org.apache.hbase:hbase-http</include>
               <include>org.apache.hbase:hbase-procedure</include>
               <include>org.apache.hbase:hbase-zookeeper</include>
-              <include>org.apache.htrace:htrace-core</include>
+              <include>org.apache.htrace:htrace-core4</include>
               <include>com.yammer.metrics:metrics-core</include>
               <include>org.apache.spark:spark-core_2.12</include>
               <include>org.apache.spark:spark-sql_2.12</include>
@@ -193,7 +207,7 @@
               <include>org.apache.kafka:kafka-clients</include>
               <include>org.apache.hbase.thirdparty:hbase-unsafe</include>
               <include>org.apache.spark:spark-token-provider-kafka-0-10_2.12</include>
-              
+              <include>org.apache.htrace:htrace</include>
               
             </includes>
             
