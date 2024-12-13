@@ -68,17 +68,24 @@ flink run -m yarn-cluster -py kafka_to_s3.py --jarfile flink-sql-connector-kafka
 python3 streaming_data_producer.py 
 ```
 
-### Check the sink data on s3 path
+### Check the sink data on s3 path  
+
+---
 
 
+      
 
-IOT/Streaming data source -> kafka -> Spark steaming -> Hbase
+## IOT/Streaming data source -> kafka -> Spark steaming -> Hbase
 
 ### Use hbase shell to create a hbase table
+```
+sudo hbsae shell
 create 'vehicle_data2', 'info','location'
+```
 
 ### Compile spark_KafkaToHbase and spark_KafkaToHbase to a jar file
 
 ### Submit Spark job
+```
 spark-submit --class com.mycompany.app.KafkaStreamingToHbase xxxxxxxxxxx.jar
-
+```
