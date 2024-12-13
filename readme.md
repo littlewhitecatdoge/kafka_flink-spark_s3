@@ -69,3 +69,16 @@ python3 streaming_data_producer.py
 ```
 
 ### Check the sink data on s3 path
+
+
+
+IOT/Streaming data source -> kafka -> Spark steaming -> Hbase
+
+### Use hbase shell to create a hbase table
+create 'vehicle_data2', 'info','location'
+
+### Compile spark_KafkaToHbase and spark_KafkaToHbase to a jar file
+
+### Submit Spark job
+spark-submit --class com.mycompany.app.KafkaStreamingToHbase xxxxxxxxxxx.jar
+
